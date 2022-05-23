@@ -14,67 +14,95 @@ function computerPlay(){
 function playRound(playerSelection, computerSelection){
 const results = document.querySelector("#results");
 switch(true){
-case ((playerSelection === "rock") && (computerSelection === "paper")):
+case ((playerSelection == "rock") && (computerSelection == "paper")):
     results.textContent = "You lose! Paper beats rock";
-    return false;     
+    results.dataset.lastState = "false";
+    break;     
 
-case ((playerSelection === "rock") && (computerSelection === "scissors")):
+case ((playerSelection == "rock") && (computerSelection == "scissors")):
     results.textContent = "You win! Rock beats scissors";
-    return true;
+    results.dataset.lastState = "true";
+    break;
 
-case ((playerSelection === "paper")&&(computerSelection==="scissors")):
+case ((playerSelection == "paper")&&(computerSelection=="scissors")):
     results.textContent = "You lose! Scissors beats paper";
-    return false;
+    results.dataset.lastState = "false";
+    break;
 
-case ((playerSelection === "paper")&&(computerSelection === "rock")):
+case ((playerSelection == "paper")&&(computerSelection == "rock")):
     results.textContent = "You win! Paper beats rock";
-    return true;
+    results.dataset.lastState = "true";
+    break;
 
-case ((playerSelection === "scissors")&&(computerSelection === "rock")):
+case ((playerSelection == "scissors")&&(computerSelection == "rock")):
     results.textContent = "You lose! Rock beats scissors";
-    return false;
+    results.dataset.lastState = "false";
+    break;
 
-case ((playerSelection === "scissors")&&(computerSelection === "paper")):
+case ((playerSelection == "scissors")&&(computerSelection == "paper")):
     results.textContent = "You win! Scissors beats paper";
-    return true;
+    results.dataset.lastState = "true";
+    break;
 
     default:
-        results.textContent = `Draw: You both chosen ${playerSelection}`;
-    return "draw";
+    results.textContent = `Draw: You both chosen ${playerSelection}`;
+    results.dataset.lastState = "draw";
+    break;
     }
 }
-
-function game(){
-    
-    let wins = 0;
-    let loses = 0;
-    
-    for (let i = 0; i<5; i++){
-        let computerSelection = computerPlay();
-        let playerSelection = prompt("What's your choice between rock/paper/scissors?", "Rock");
-        let gameResult = playRound(playerSelection, computerSelection);
-        if (gameResult === "draw"){
-        } else if (gameResult){
-            wins++;
-        } else {
-            loses++;
-        }
-    }
-  
-//Check whether game result was a draw, or win of either player or computer
-    if (wins === loses){
-        console.log("It's a draw!");
-    } else if (wins > loses){
-        console.log("Player wins!");
-    } else {
-        console.log("Computer wins!");
-    }
-}
-
 
 const buttons = document.querySelectorAll("button");
 buttons.forEach(button => {
     button.addEventListener("click", function(){
         playRound(button.id, computerPlay());
+        game();
     })
 });
+
+
+let wins = 0;
+let loses = 0;
+let total = 0;
+
+function game(){
+    const results = document.querySelector("#results");
+    let lastState = results.dataset.lastState;
+    console.log(lastState);
+    if(lastState == "true"){
+        wins++;
+        total++;
+    } else if(lastState == "false"){
+        loses++;
+        total++;
+    } else {
+        total++;
+    }
+    checkWin();
+}
+
+function checkWin(){
+    if((total == 5) && (wins>loses)){
+        gameMessage("Yon won!");
+        wins = 0;
+        loses = 0;
+        total = 0;
+    } else if ((total == 5) && ( wins < loses)){
+        gameMessage("You lost!");
+        wins = 0;
+        loses = 0;
+        total = 0;
+    } else if (total == 5){
+        gameMessage("It's a tie");
+        wins = 0;
+        loses = 0;
+        total = 0;
+    }
+}
+
+function gameMessage(messageText){
+    const appendto = document.querySelector("#results");
+    const message = document.createElement("p");
+    
+    message.textContent = `${messageText}`;
+    appendto.appendChild(message);
+}
