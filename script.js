@@ -10,40 +10,40 @@ function computerPlay(){
 }
 
 //Checks player vs computer choices and returns true/false in case of player winning/losing, or string "draw" in case of a draw
+
 function playRound(playerSelection, computerSelection){
-playerSelection = playerSelection.toLowerCase();
+const results = document.querySelector("#results");
 switch(true){
 case ((playerSelection === "rock") && (computerSelection === "paper")):
-    console.log("You lose! Paper beats rock!");
+    results.textContent = "You lose! Paper beats rock";
     return false;     
 
 case ((playerSelection === "rock") && (computerSelection === "scissors")):
-    console.log("You win! Rock beats scissors");
+    results.textContent = "You win! Rock beats scissors";
     return true;
 
 case ((playerSelection === "paper")&&(computerSelection==="scissors")):
-    console.log("You lose! Scissors beats paper");
+    results.textContent = "You lose! Scissors beats paper";
     return false;
 
 case ((playerSelection === "paper")&&(computerSelection === "rock")):
-    console.log("You win! Paper beats rock");
+    results.textContent = "You win! Paper beats rock";
     return true;
 
 case ((playerSelection === "scissors")&&(computerSelection === "rock")):
-    console.log("You lose! Rock beats scissors");
+    results.textContent = "You lose! Rock beats scissors";
     return false;
 
 case ((playerSelection === "scissors")&&(computerSelection === "paper")):
-    console.log("You win! Scissors beats paper");
+    results.textContent = "You win! Scissors beats paper";
     return true;
 
     default:
-    console.log(`Draw: You both chosen ${playerSelection}`);
+        results.textContent = `Draw: You both chosen ${playerSelection}`;
     return "draw";
     }
 }
 
-//Prompt player to enter a choice between rock/paper/scissors with default choice being rock
 function game(){
     
     let wins = 0;
@@ -60,13 +60,21 @@ function game(){
             loses++;
         }
     }
-    
+  
 //Check whether game result was a draw, or win of either player or computer
     if (wins === loses){
-        console.log("It's a draw!")
+        console.log("It's a draw!");
     } else if (wins > loses){
-        console.log("Player wins!")
+        console.log("Player wins!");
     } else {
-        console.log("Computer wins!")
+        console.log("Computer wins!");
     }
 }
+
+
+const buttons = document.querySelectorAll("button");
+buttons.forEach(button => {
+    button.addEventListener("click", function(){
+        playRound(button.id, computerPlay());
+    })
+});
