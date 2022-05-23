@@ -62,7 +62,12 @@ buttons.forEach(button => {
 
 let wins = 0;
 let loses = 0;
-let total = 0;
+let draws = 0;
+const results = document.querySelector("#results")
+let score = document.createElement("p");
+    score.textContent = `wins: ${wins}  loses: ${loses}  draws: ${draws}`;
+    results.appendChild(score);
+
 
 function game(){
     const results = document.querySelector("#results");
@@ -70,39 +75,33 @@ function game(){
     console.log(lastState);
     if(lastState == "true"){
         wins++;
-        total++;
     } else if(lastState == "false"){
         loses++;
-        total++;
     } else {
-        total++;
+        draws++;
     }
+    let score = document.createElement("p");
+    score.textContent = `wins: ${wins}  loses: ${loses}  draws: ${draws}`;
+    results.appendChild(score);
     checkWin();
 }
 
 function checkWin(){
-    if((total == 5) && (wins>loses)){
+    if (wins == 5){
         gameMessage("Yon won!");
-        wins = 0;
-        loses = 0;
-        total = 0;
-    } else if ((total == 5) && ( wins < loses)){
+    } else if (loses == 5){
         gameMessage("You lost!");
-        wins = 0;
-        loses = 0;
-        total = 0;
-    } else if (total == 5){
-        gameMessage("It's a tie");
-        wins = 0;
-        loses = 0;
-        total = 0;
+    } else if (draws == 5){
+        gameMessage("It's a draw!")
     }
 }
 
 function gameMessage(messageText){
     const appendto = document.querySelector("#results");
     const message = document.createElement("p");
-    
     message.textContent = `${messageText}`;
     appendto.appendChild(message);
+    wins = 0;
+    loses = 0;
+    draws = 0;
 }
